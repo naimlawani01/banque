@@ -1,0 +1,40 @@
+# fichier_clients = open("clients.txt", "r")
+    # l=[]
+    # lignes=fichier_clients.readlines()
+    # for x in lignes:
+    #     l.append(x.split())
+    # user=input("Quel est votre numero de compte? ")
+    # for x in l:
+    #     if x[0]==user:
+    #         indice=l.index(x)
+    #         del lignes[indice]
+    # fichier_clients.close()
+    # fichier_clients = open("clients.txt", "w")
+    # fichier_clients.writelines(lignes)
+    # fichier_clients.close()
+    
+    # return ("Le numero de compte {} a ete supprime de la banque...".format(user))
+    # ............................................................
+    NB: cette instruction ci dessus permet aussi de supprimer un compte.
+
+
+
+    liste_marchands=["Maxi","Rona","Epicier"]
+        dico_marchands={"Maxi":{"Patates":5,"Tomates":6,"Viandes":30,"Papier":20,"Poisson":25},"Rona":{"Bois":50,"Ceramique":10,"Tondeuse":500,"Peinture":80},"Epicier":{"Lait":5,"Bierre":20,"Cigarette":15,"Essence":2}}
+        marchand=input("Vous voulez realiser des transactions chez quel marchand ?")
+        if marchand in liste_marchands:
+            if marchand=="Maxi":
+                print("Voici les produit que vous pouvez acheter chez Maxi:")
+                print("Patates(5$/kg)\nTomates(6$/kg)\nViandes(30$/kg)\nPapier(20$/unite)\nPoisson(25$/kg)")
+                f.depense(dico_marchands["Maxi"]) 
+            elif marchand=="Rona":
+                print("Voici les produit que vous pouvez acheter chez Rona:")
+                print("Bois(50$/unite)\nCeramique(10$/unite)\nTondeuse(500$)\nPeinture(80$/gallon)")
+                f.depense(dico_marchands["Rona"])
+            elif marchand=="Epicier":
+                print("Voici les produit que vous pouvez acheter chez Epicier:")
+                print("Lait(5$/litre)\nBiere(20$/boite)\nCigarette(15$/boite)\nEssence(2$/litre)")
+                f.depense(dico_marchands["Epicier"])
+        else:
+            print("Le marchant {}  ne figure pas sur la liste de nos magasins participants...".format(marchand))
+# ............................................................................................
