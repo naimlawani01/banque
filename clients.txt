@@ -4,3 +4,4 @@ adama-656363-3 camara sekouba 16/07/1997 25 1998 317000.0
 adama-636663-4 sylla david 16/07/1997 25 1998 479000.0
 adama-696163-6 cherif mohamed djellani 15/07/1996 1234 2598.0
 adama-636643-7 conde aissata 11/07/2000 25 1213 3000.5
+adama-512135-7 toure sekou  12  23  2222  12.0

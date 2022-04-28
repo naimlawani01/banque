@@ -14,11 +14,11 @@ while run:
         nom = input('Nom du client: ')
         prenom = input('Prenom du client: ')
         if f.check_nom_prenom(nom, prenom):
-            choix_3 =f.menu_3()
+            choix_3 = f.menu_3()
             if choix_3 == 1:
-                continue
+                break
             elif choix_3 == 2:
-                continue
+                f.effectuer_operation()
         else:
             date_de_naissance = input("Date de naissance (jj/mm/aaaa): ")
             age = input("Age :")
