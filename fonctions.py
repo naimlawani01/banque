@@ -170,6 +170,7 @@ def check_nom_prenom(nom, prenom):
     dico={}
     for x in ligne_chaine:
         dico[x[1]]=x[2]
+
     if nom in dico and dico[nom]==prenom:
         return True
     else:
