@@ -6,12 +6,6 @@ def menu_1():
     choix = int(input("--> "))
     return choix
 # ................................................................................................
-def get_ligne_fichier(nom_fichier):
-    fichier_clients = open(nom_fichier, "r")
-    lignes = fichier_clients.readlines() #On lit le contenu du fichier et on le stock dans une variable (lignes)
-    fichier_clients.close()
-    return lignes
-# ................................................................................................
 def menu_2():
     print("1- Deposer de l'argent sur le compte")
     print("2- Retirer de l'argent du compte")
@@ -21,7 +15,22 @@ def menu_2():
     print("6- Faire un achat")
     choix=int(input("--> "))
     return choix
+# -------------------------------------------------------------------------
+
+def menu_3():
+    print("1- Se connecter")
+    print("2- Ouvrir un nouveau compte avec de nouvelles infos")
+    choix = int(input("--> "))
+    return choix
+
 # ................................................................................................
+def get_ligne_fichier(nom_fichier):
+    fichier_clients = open(nom_fichier, "r")
+    lignes = fichier_clients.readlines() #On lit le contenu du fichier et on le stock dans une variable (lignes)
+    fichier_clients.close()
+    return lignes
+# ................................................................................................
+
 def fermeture_compte():
     print('Suppression du compte')
     #Ouvert le fichier en mode lecture
@@ -61,7 +70,7 @@ def retirer_argent(compte,somme_a_retirer):
                 print("Votre nouveau solde est: {} dollars".format(nouveau_solde))
     fichier_clients.close()
 # ................................................................................................
-def effectuer_operation(compte, marchand, produit):
+def effectuer_achat(compte, marchand, produit):
     quantite=float(input("Tu veux pour combien de quantite? "))
     prix_unitaire=u.MARCHANT[marchand][produit]["prix"]
     prix_total=quantite*prix_unitaire
@@ -152,3 +161,96 @@ def check_password(compte, code_pin):
         return False
 # ................................................................................................
          
+def check_nom_prenom(nom, prenom):
+    lignes=get_ligne_fichier("clients.txt")
+    ligne_chaine=[]
+
+    for ligne in lignes:
+        ligne_chaine.append(ligne.split())
+    dico={}
+    for x in ligne_chaine:
+        dico[x[1]]=x[2]
+    if nom in dico and dico[nom]==prenom:
+        return True
+    else:
+        return False
+
+#-------------------------------------------------------------
+def effectuer_operation():
+    compte = input("Entrer le numero de compte: ")
+    NIP=verification_nip()
+    while check_password(compte,NIP)==False:
+        print('Numero de compte ou Mot de passe incorrecte')
+        compte = input("Entrer le numero de compte: ")
+        NIP=verification_nip()
+    continuer = True
+    liste_choix=['n','o']
+    while continuer:
+        if check_password(compte,NIP):
+            choix_2 = menu_2()
+            if choix_2 == 1:
+                deposer_argent(compte)
+            if choix_2 == 2:
+                somme_a_retirer = float(input("Montant a retirer: "))
+                retirer_argent(compte,somme_a_retirer)
+            if choix_2 == 3:
+                afficher_solde(compte)
+            if choix_2==4:
+                liste_achats=get_ligne_fichier("achat.txt")
+                l=[]
+                operations=[]
+                for elements in liste_achats:
+                    l.append(elements.split())
+                for premier_element in l:
+                    if compte==premier_element[0]:
+                        operations.append(premier_element)
+                nombre_historique_transaction=int(input("nombre de n derniere(s) transaction(s)? "))
+                a=operations[-nombre_historique_transaction:]
+                if len(a)==0:
+                    print('Aucune transaction pour ce compte')
+                else: 
+                    print('Historique des {} deniere(s) operations(achat) sur le compte {}: \n'.format(nombre_historique_transaction,compte))
+                    for x in a:
+                        print(" ".join(x))
+            if choix_2 == 5:
+                changement_pin(compte)
+                break
+            if choix_2==6:
+                affiche_marchant()
+                option_choix_marchant=recup_option()
+                if option_choix_marchant==1:
+                    marchand=u.LISTE_MARCHANDS[option_choix_marchant]
+                    affiche_produit(marchand)
+                    produit=input("Qu'est ce que vous voulez acheter? ")
+                    if produit in u.MARCHANT[marchand].keys():
+                        effectuer_achat(compte, marchand, produit)
+                elif option_choix_marchant==2:
+                    marchand=u.LISTE_MARCHANDS[option_choix_marchant]
+                    affiche_produit(marchand)
+                    produit=input("Qu'est ce que vous voulez acheter? ")
+                    if produit in u.MARCHANT[marchand].keys():
+                        effectuer_achat(compte, marchand, produit)
+                elif option_choix_marchant==3:
+                    marchand=u.LISTE_MARCHANDS[option_choix_marchant]
+                    affiche_produit(marchand)
+                    produit=input("Qu'est ce que vous voulez acheter? ")
+                    if produit in u.MARCHANT[marchand].keys():
+                        effectuer_achat(compte, marchand, produit) 
+                else:
+                    print("Ce marchant n'existe pas ...")   
+        else:
+            print("Numero du compte ou mot de passe incorrect.")
+        choix_continuer = input('Vous voulez effectuer une autre operation ?(o/n): ').lower()
+        while choix_continuer not in liste_choix:
+            print("VOUS DEVEZ REPONDRE PAR : (o) OU (n)\n")
+            choix_continuer = input('Vous voulez effectuer une autre operation ?(o/n): ').lower()
+        if choix_continuer=='n':
+            continuer =False
+            
+    choix_run = input('Vous voulez quitter le programme ?(o/n): ').lower()
+
+    while choix_run not in liste_choix:
+        print("VOUS DEVEZ REPONDRE PAR : (o) OU (n)\n")
+        choix_run = input('Vous voulez quitter le programme ?(o/n): ').lower()
+    if choix_run=='o':
+        run =False
